@@ -57,8 +57,8 @@ jobs:
     - Integration-Test-to-integration-test
     steps:
     - uses: trstringer/manual-approval@v1
-        with:
-          approvers: vpgitops45
+      with:
+        approvers: vpgitops45
     - uses: actions/checkout@v4.1.0
     - uses: actions/setup-java@v4.0.0
       with:
