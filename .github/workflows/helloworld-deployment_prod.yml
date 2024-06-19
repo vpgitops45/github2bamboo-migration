@@ -1,0 +1,37 @@
+name: helloworld-deployment_prod
+on:
+  workflow_dispatch:
+jobs:
+  PROD:
+    runs-on: ubuntu-latest
+    env:
+      env: prod
+    steps:
+    - name: Clean working directory
+      run: rm -rf ${{ github.workspace }}/*
+      shell: bash
+    # warning: This will download all available artifacts, ensure this is the correct behavior.
+    - uses: actions/download-artifact@v4.1.0
+    - name: to upload artifact(localhost)
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: localhost
+        target: "/tmp"
+        username: test
+        password: "${{ secrets.TEST_PASSWORD }}"
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+    - name: SSH localhost
+      run: |-
+        sshpass -p ${{ secrets.BAMBOO_SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -T ${{ env.USER_NAME }}@localhost << EOF
+          cd /tmp
+          ls -ltr
+        EOF
+      env:
+        USER_NAME: test
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+    - name: SSH localhost
+      run: "sshpass -p ${{ secrets.BAMBOO_SSH_PASSWORD }} ssh -o StrictHostKeyChecking=no -T ${{ env.USER_NAME }}@localhost << EOF\n  echo \"#####################################################\"\n  \n  echo \"Application has been deployed to ${{ env.env }} environment successfuly\"\n  \n  echo \"##############  ENJOY ##################################\"\nEOF"
+      env:
+        USER_NAME: test
