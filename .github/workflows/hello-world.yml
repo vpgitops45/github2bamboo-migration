@@ -56,7 +56,7 @@ jobs:
     - Unit-Test-to-unit-Test
     - Integration-Test-to-integration-test
     steps:
-    - uses: trstringer/manual-approval@v1  ##### step added later for manual approval
+    - uses: trstringer/manual-approval@v1
         with:
           approvers: vpgitops45
     - uses: actions/checkout@v4.1.0
